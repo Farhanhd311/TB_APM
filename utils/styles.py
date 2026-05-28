@@ -280,6 +280,14 @@ hr { border-color: #1D5C5C !important; margin: 24px 0 !important; }
     padding: 24px;
     margin-bottom: 16px;
 }
+.auth-card {
+    background: linear-gradient(135deg, rgba(15,61,61,0.9), rgba(10,41,41,0.95));
+    border: 1px solid #1D5C5C;
+    border-radius: 20px;
+    padding: 28px 24px 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+
 .form-section-title {
     font-size: 1rem;
     font-weight: 600;
@@ -315,5 +323,82 @@ hr { border-color: #1D5C5C !important; margin: 24px 0 !important; }
 }
 .empty-state .icon { font-size: 4rem; margin-bottom: 16px; }
 .empty-state .text { font-size: 1.1rem; color: #2D7070; }
+
+/* ══ PROGRESS BAR ══ */
+.progress-container {
+    background: rgba(13,53,53,0.5);
+    border: 1px solid #1D5C5C;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+}
+.progress-bar-bg {
+    background: #1D5C5C;
+    border-radius: 10px;
+    height: 12px;
+    width: 100%;
+    overflow: hidden;
+    margin-top: 8px;
+}
+.progress-bar-fill {
+    background: linear-gradient(90deg, #00C9A7, #00DDB8);
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+/* ══ BADGES ══ */
+.badge-card {
+    background: linear-gradient(135deg, rgba(15,61,61,0.8), rgba(10,41,41,0.9));
+    border: 1px solid #1D5C5C;
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+.badge-card.unlocked {
+    border-color: #00C9A7;
+    box-shadow: 0 4px 15px rgba(0,201,167,0.15);
+}
+.badge-card.locked {
+    opacity: 0.6;
+    filter: grayscale(100%);
+}
+.badge-emoji { font-size: 2.5rem; margin-bottom: 8px; }
+.badge-title { font-size: 1rem; font-weight: 700; color: #FFFFFF; }
+.badge-desc { font-size: 0.8rem; color: #7DCFBA; margin: 4px 0 8px; }
+.badge-status { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 10px; display: inline-block; }
+.status-unlocked { background: rgba(0,201,167,0.2); color: #00C9A7; }
+.status-locked { background: rgba(255,255,255,0.1); color: #B0D8D8; }
+
+/* ══ PROFILE ══ */
+.profile-card {
+    background: linear-gradient(135deg, rgba(15,61,61,0.8), rgba(10,41,41,0.9));
+    border: 1px solid #1D5C5C;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+}
+.profile-avatar {
+    font-size: 4rem;
+    background: rgba(0,201,167,0.1);
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    border: 2px solid #00C9A7;
+}
+
+/* ══ REMINDER ══ */
+.reminder-card {
+    background: rgba(239, 71, 111, 0.1);
+    border-left: 4px solid #EF476F;
+    border-radius: 0 12px 12px 0;
+    padding: 16px;
+    margin: 16px 0;
+}
 </style>
 """
