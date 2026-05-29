@@ -4,29 +4,31 @@ import time
 from utils.styles import get_custom_css
 import utils.database as db
 from utils.i18n import t, get_lang
-from utils.auth import init_auth_state, is_logged_in, render_account_sidebar, get_current_user
+from utils.auth import render_sidebar, is_logged_in, get_current_user
 
 st.set_page_config(
-    page_title="Profil Pengguna — CaloriQ",
+    page_title="Profil — CaloriQ",
     page_icon="👤",
     layout="wide",
 )
 
 st.markdown(get_custom_css(), unsafe_allow_html=True)
-init_auth_state()
+render_sidebar()
 lang = get_lang()
-render_account_sidebar()
 
+# ── Page Header ──
 st.markdown(
-    f'<div class="section-title">{t("prof_title", lang)}</div>'
-    f'<div class="section-sub">{t("prof_subtitle", lang)}</div>',
-    unsafe_allow_html=True,
+    '<div class="page-header">'
+    '<div class="page-title">Profil Pengguna</div>'
+    f'<div class="page-subtitle">{t("prof_subtitle", lang)}</div>'
+    '</div>',
+    unsafe_allow_html=True
 )
 
+# ── Guard Login ──
 if not is_logged_in():
     st.info(t("prof_login_required", lang))
-    st.page_link("pages/9_🔐_Login.py", label=f"🔐 {t('auth_login', lang)}")
-    st.page_link("pages/10_📝_Daftar.py", label=f"📝 {t('auth_register', lang)}")
+    st.page_link("pages/9_🔐_Login.py", label="Masuk ke akun")
     st.stop()
 
 current_user = get_current_user()
@@ -41,33 +43,50 @@ p_language = profile.get("language", "id")
 c_prof, c_edit = st.columns([1, 2])
 
 with c_prof:
-    st.markdown(
-        f"""
+    # Avatar icon based on gender (text only, no emoji)
+    avatar_initial = (p_name or current_user["username"])[0].upper()
+
+    st.markdown(f"""
 <div class="profile-card">
-<div class="profile-avatar">{"👱‍♂️" if p_gender == "Male" else "👩"}</div>
-<div style="font-size:1.4rem; font-weight:700; color:#FFFFFF;">{p_name}</div>
-<div style="color:#B0D8D8; font-size:0.85rem; margin-top:4px;">@{current_user['username']}</div>
-<div style="color:#00C9A7; font-weight:600; margin-bottom:16px;">{t("prof_member", lang)}</div>
-<div style="display:flex; justify-content:space-between; border-top:1px solid #1D5C5C; padding-top:12px; margin-top:12px; font-size:0.9rem;">
-<span style="color:#7DCFBA;">{t("pred_age", lang)}</span>
-<span style="color:#FFFFFF; font-weight:600;">{p_age}</span>
+<div style="text-align:center; margin-bottom:16px;">
+    <div style="
+        width:72px; height:72px;
+        background: linear-gradient(135deg, rgba(0,201,167,0.2), rgba(0,201,167,0.05));
+        border: 2px solid rgba(0,201,167,0.35);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Outfit, sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #00C9A7;
+        margin-bottom: 12px;
+    ">{avatar_initial}</div>
+    <div style="font-size:1.2rem; font-weight:700; color:#FFFFFF;">{p_name}</div>
+    <div style="color:#4D9E8F; font-size:0.82rem; margin-top:2px;">@{current_user['username']}</div>
+    <div style="color:#00C9A7; font-size:0.78rem; font-weight:600; margin-top:6px; letter-spacing:0.5px;">Member CaloriQ</div>
 </div>
-<div style="display:flex; justify-content:space-between; border-top:1px solid #1D5C5C; padding-top:12px; margin-top:12px; font-size:0.9rem;">
-<span style="color:#7DCFBA;">{t("pred_height", lang)}</span>
-<span style="color:#FFFFFF; font-weight:600;">{p_height} cm</span>
+<div style="border-top:1px solid #1D5C5C; padding-top:14px;">
+    <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:0.88rem;">
+        <span style="color:#4D9E8F;">Usia</span>
+        <span style="color:#FFFFFF; font-weight:600;">{p_age} tahun</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:0.88rem; border-top:1px solid #1D5C5C11;">
+        <span style="color:#4D9E8F;">Tinggi</span>
+        <span style="color:#FFFFFF; font-weight:600;">{p_height} cm</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:0.88rem; border-top:1px solid #1D5C5C11;">
+        <span style="color:#4D9E8F;">Berat</span>
+        <span style="color:#FFFFFF; font-weight:600;">{p_weight} kg</span>
+    </div>
 </div>
-<div style="display:flex; justify-content:space-between; border-top:1px solid #1D5C5C; padding-top:12px; margin-top:12px; font-size:0.9rem;">
-<span style="color:#7DCFBA;">{t("pred_weight", lang)}</span>
-<span style="color:#FFFFFF; font-weight:600;">{p_weight} kg</span>
 </div>
-</div>
-""",
-        unsafe_allow_html=True,
-    )
+""", unsafe_allow_html=True)
 
 with c_edit:
     st.markdown('<div class="form-section">', unsafe_allow_html=True)
-    st.markdown(f'<div class="form-section-title">⚙️ {t("prof_edit", lang)}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="form-section-title">Edit Profil</div>', unsafe_allow_html=True)
 
     with st.form("profile_form"):
         new_name = st.text_input(t("prof_nickname", lang), value=p_name)
@@ -83,7 +102,7 @@ with c_edit:
 
         st.markdown("<hr>", unsafe_allow_html=True)
         st.markdown(
-            f'<div style="font-size:0.9rem; color:#7DCFBA; margin-bottom:8px;">🌍 {t("prof_lang", lang)}</div>',
+            f'<div style="font-size:0.85rem; color:#4D9E8F; margin-bottom:8px;">Bahasa / Language</div>',
             unsafe_allow_html=True,
         )
 
@@ -92,11 +111,12 @@ with c_edit:
             "Bahasa",
             ["id", "en"],
             index=lang_idx,
-            format_func=lambda x: "🇮🇩 Indonesia" if x == "id" else "🇬🇧 English",
+            format_func=lambda x: "Indonesia" if x == "id" else "English",
             horizontal=True,
+            label_visibility="collapsed"
         )
 
-        submit = st.form_submit_button(t("prof_save", lang), use_container_width=True)
+        submit = st.form_submit_button(t("prof_save", lang).replace("💾 ", ""), use_container_width=True)
 
         if submit:
             saved = db.save_profile(new_name, new_gender, new_age, new_height, new_weight, new_language)
@@ -110,7 +130,11 @@ with c_edit:
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    if st.button("🔴 Reset Seluruh Data & Riwayat (Danger Zone)", use_container_width=True, type="primary"):
-        db.reset_all_data()
-        st.warning(t("prof_reset_done", lang))
-        st.rerun()
+    # Danger zone
+    st.markdown("<br>", unsafe_allow_html=True)
+    with st.expander("Zona Berbahaya — Reset Data"):
+        st.warning("Tindakan ini akan menghapus **semua** riwayat, profil, badge, dan target secara permanen.")
+        if st.button("Hapus Semua Data", type="primary"):
+            db.reset_all_data()
+            st.warning(t("prof_reset_done", lang))
+            st.rerun()
