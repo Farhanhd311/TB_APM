@@ -92,7 +92,6 @@ def render_sidebar():
         )
 
         st.page_link("pages/5_🏋️_Program.py", label="Program Olahraga", icon=":material/fitness_center:")
-        st.page_link("pages/6_🔬_Simulasi.py", label="Simulasi What-If", icon=":material/science:")
         st.page_link("pages/7_🏆_Pencapaian.py", label="Pencapaian", icon=":material/emoji_events:")
 
         # ── Akun ──────────────────────────────────────

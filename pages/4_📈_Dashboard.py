@@ -46,20 +46,24 @@ if df_daily.empty or not all_preds:
     </div>
     """, unsafe_allow_html=True)
 else:
+    # Calculate session-based metrics
+    best_session = max(p['calories'] for p in all_preds) if all_preds else 0
+    avg_session = sum(p['calories'] for p in all_preds) / len(all_preds) if all_preds else 0
+
     # ── Top Stats ──
     s1, s2, s3, s4 = st.columns(4)
     with s1:
         st.markdown(f"""
         <div class="stat-card">
-            <div class="stat-value">{df_daily['total_cal'].max():.0f}</div>
-            <div class="stat-label">Hari Terbaik (kcal)</div>
+            <div class="stat-value">{best_session:.0f}</div>
+            <div class="stat-label">Sesi Terbaik (kcal)</div>
         </div>
         """, unsafe_allow_html=True)
     with s2:
         st.markdown(f"""
         <div class="stat-card">
-            <div class="stat-value">{df_daily['total_cal'].mean():.0f}</div>
-            <div class="stat-label">Rata-rata Harian (kcal)</div>
+            <div class="stat-value">{avg_session:.0f}</div>
+            <div class="stat-label">Rata-rata Sesi (kcal)</div>
         </div>
         """, unsafe_allow_html=True)
     with s3:
